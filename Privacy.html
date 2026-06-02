@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개인정보 처리방침 — 혈압 가계부</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F5EDE0;
+            --cream-dark: #EAD9C6;
+            --terracotta: #C8896A;
+            --terracotta-dark: #A0614A;
+            --terracotta-light: #E8C9B0;
+            --ink: #2A1F17;
+            --ink-mid: #5C4A3A;
+            --ink-light: #9A8070;
+            --white: #FAFAF8;
+            --serif: 'Noto Serif KR', serif;
+            --sans: 'Noto Sans KR', sans-serif;
+            --mono: 'Space Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(245, 237, 224, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: block;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-family: var(--serif);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .back-btn {
+            font-size: 13px;
+            color: var(--terracotta-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid var(--terracotta-light);
+            padding: 6px 16px;
+            border-radius: 20px;
+            transition: background .2s;
+        }
+
+        .back-btn:hover {
+            background: var(--terracotta-light);
+        }
+
+        .page-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+
+        .page-hero {
+            margin-bottom: 60px;
+        }
+
+        .page-tag {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--terracotta-dark);
+            background: var(--terracotta-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-family: var(--serif);
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -.02em;
+        }
+
+        .page-meta {
+            font-size: 13px;
+            color: var(--ink-light);
+            border-left: 3px solid var(--terracotta-light);
+            padding-left: 14px;
+            line-height: 1.7;
+        }
+
+        .summary-box {
+            background: var(--ink);
+            color: #fff;
+            border-radius: 20px;
+            padding: 36px 40px;
+            margin-bottom: 60px;
+        }
+
+        .summary-box h2 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--terracotta-light);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .summary-item {
+            background: rgba(255, 255, 255, .05);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .si-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .si-text h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .9);
+            margin-bottom: 3px;
+        }
+
+        .si-text p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, .45);
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 52px;
+            padding-bottom: 52px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .1em;
+            color: var(--terracotta);
+            margin-bottom: 8px;
+        }
+
+        .section h2 {
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ink);
+        }
+
+        .section h3 {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ink);
+            margin: 20px 0 8px;
+        }
+
+        .section p {
+            color: var(--ink-mid);
+            margin-bottom: 12px;
+        }
+
+        .section ul {
+            padding-left: 20px;
+            color: var(--ink-mid);
+        }
+
+        .section ul li {
+            margin-bottom: 6px;
+        }
+
+        .highlight-box {
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            border-left: 4px solid var(--terracotta);
+            border-radius: 0 12px 12px 0;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            color: var(--ink-mid);
+            margin: 0;
+        }
+
+        .highlight-box strong {
+            color: var(--terracotta-dark);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .info-table th {
+            background: var(--ink);
+            color: rgba(255, 255, 255, .85);
+            padding: 10px 16px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .info-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--cream-dark);
+            color: var(--ink-mid);
+            vertical-align: top;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-table tr:nth-child(even) td {
+            background: var(--white);
+        }
+
+        .admob-box {
+            background: #FFF8F0;
+            border: 1px solid var(--cream-dark);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin: 20px 0;
+        }
+
+        .admob-box h3 {
+            color: var(--terracotta-dark);
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .admob-box p {
+            font-size: 14px;
+            color: var(--ink-mid);
+            margin-bottom: 8px;
+        }
+
+        .admob-box a {
+            color: var(--terracotta-dark);
+        }
+
+        .contact-box {
+            background: var(--white);
+            border: 1px solid var(--cream-dark);
+            border-radius: 16px;
+            padding: 28px 32px;
+        }
+
+        .contact-box h3 {
+            font-family: var(--serif);
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .contact-label {
+            color: var(--ink-light);
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .contact-value {
+            color: var(--ink-mid);
+        }
+
+        .contact-value a {
+            color: var(--terracotta-dark);
+            text-decoration: none;
+        }
+
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, .4);
+            padding: 36px 40px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, .4);
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 20px;
+            }
+
+            .page-wrap {
+                padding: 100px 20px 60px;
+            }
+
+            .summary-box {
+                padding: 28px 24px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a class="logo" href="index.html">
+            <img class="logo-icon" src="asset/img.png" alt="혈압 가계부 로고">
+            <span class="logo-text">혈압 가계부</span>
+        </a>
+        <a class="back-btn" href="index.html">← 홈으로</a>
+    </header>
+
+    <div class="page-wrap">
+
+        <div class="page-hero">
+            <div class="page-tag">PRIVACY POLICY</div>
+            <h1 class="page-title">개인정보 처리방침</h1>
+            <div class="page-meta">
+                시행일: 2026년 6월 2일<br>
+                개발사: hopalt (com.hopalt.vitalreceipt)<br>
+                최종 업데이트: 2026년 6월 2일
+            </div>
+        </div>
+
+        <!-- 요약 박스 -->
+        <div class="summary-box">
+            <h2>⚡ 핵심 요약 — 3줄로 읽기</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="si-icon">📱</span>
+                    <div class="si-text">
+                        <h4>모든 데이터, 기기에만</h4>
+                        <p>건강 수치·약 정보·사진은 외부 서버로 전송되지 않습니다.</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <span class="si-icon">🚫</span>
+                    <div class="si-text">
+                        <h4>회원가입 없음</h4>
+                        <p>이름·이메일·전화번호 등 개인 식별 정보를 수집하지 않습니다.</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <span class="si-icon">📢</span>
+                    <div class="si-text">
+                        <h4>광고 SDK 포함</h4>
+                        <p>Google AdMob이 광고 식별자(GAID)를 수집할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <span class="si-icon">🗑️</span>
+                    <div class="si-text">
+                        <h4>삭제 = 완전 삭제</h4>
+                        <p>앱 삭제 시 기기 내 모든 데이터가 함께 삭제됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. 개요 -->
+        <div class="section">
+            <div class="section-num">01</div>
+            <h2>개요 및 적용 범위</h2>
+            <p>혈압 가계부(이하 "앱")은 hopalt(이하 "개발사")이 개발한 개인 건강 기록 애플리케이션입니다. 본 방침은 앱 사용 중 수집되거나 처리되는 정보에 대한 내용을 안내합니다.</p>
+            <p>본 앱은 <strong>완전 오프라인 방식으로 작동</strong>하며, 사용자의 건강 데이터는 사용자의 기기 내에만 저장됩니다. 개발사는 사용자의 건강 데이터에 접근하거나 이를 수집하지
+                않습니다.</p>
+            <div class="highlight-box">
+                <p><strong>본 앱은 의료기기가 아닙니다.</strong> 앱에 기록된 건강 수치는 개인 참고용이며, 의학적 진단·치료·처방의 근거로 사용할 수 없습니다. 건강 이상 시 반드시
+                    의료 전문가와 상담하세요.</p>
+            </div>
+        </div>
+
+        <!-- 2. 수집 정보 -->
+        <div class="section">
+            <div class="section-num">02</div>
+            <h2>수집하는 정보</h2>
+
+            <h3>2-1. 앱이 기기 내에 저장하는 정보 (외부 전송 없음)</h3>
+            <p>아래 정보는 사용자가 직접 입력하거나 앱 기능 사용 중 생성되며, 기기 내 로컬 데이터베이스(SQLite)에만 저장됩니다.</p>
+
+            <table class="info-table">
+                <tr>
+                    <th>정보 유형</th>
+                    <th>수집 내용</th>
+                    <th>저장 위치</th>
+                </tr>
+                <tr>
+                    <td>건강 수치</td>
+                    <td>체중(kg), 최고혈압, 최저혈압, 심박수, 측정 시각</td>
+                    <td>기기 내 DB</td>
+                </tr>
+                <tr>
+                    <td>혈당 (선택)</td>
+                    <td>혈당 수치(mg/dL), 측정 타이밍, 메모</td>
+                    <td>기기 내 DB</td>
+                </tr>
+                <tr>
+                    <td>복용약 정보</td>
+                    <td>약 이름, 복용 시간, 복용 요일, 메모, 약 사진(선택)</td>
+                    <td>기기 내 저장소</td>
+                </tr>
+                <tr>
+                    <td>복용 기록</td>
+                    <td>복용 완료·건너뜀·미복용 상태 및 시각</td>
+                    <td>기기 내 DB</td>
+                </tr>
+                <tr>
+                    <td>식단 영수증</td>
+                    <td>촬영 사진 + 수치 합성 이미지 → 갤러리에만 저장, 앱 내 미보관</td>
+                    <td>기기 갤러리</td>
+                </tr>
+            </table>
+
+            <h3>2-2. 앱이 수집하지 않는 정보</h3>
+            <ul>
+                <li>이름, 생년월일, 성별, 전화번호, 이메일 등 개인 식별 정보</li>
+                <li>위치 정보(GPS)</li>
+                <li>연락처, 문자, 통화 기록</li>
+                <li>기기 고유 식별자(IMEI 등)</li>
+                <li>로그인 정보(회원가입 없음)</li>
+            </ul>
+        </div>
+
+        <!-- 3. AdMob -->
+        <div class="section">
+            <div class="section-num">03</div>
+            <h2>광고 및 제3자 SDK</h2>
+            <p>본 앱은 무료 서비스 유지를 위해 <strong>Google AdMob</strong> 광고 SDK를 포함합니다. 개발사의 건강 데이터 처리와는 완전히 독립적으로 작동합니다.</p>
+
+            <div class="admob-box">
+                <h3>📢 Google AdMob 광고 SDK</h3>
+                <p><strong>수집 주체:</strong> Google LLC (개발사 아님)</p>
+                <p><strong>수집 가능 정보:</strong> 광고 식별자(GAID/IDFA), 광고 상호작용, 기기 정보(OS 버전·화면 크기 등), 대략적 위치(IP 기반)</p>
+                <p><strong>수집 목적:</strong> 맞춤형 광고 표시, 광고 효과 측정</p>
+                <p><strong>보관:</strong> Google 서버 (개발사 접근 불가)</p>
+                <p>
+                    Google 개인정보처리방침:
+                    <a href="https://policies.google.com/privacy"
+                        target="_blank">https://policies.google.com/privacy</a>
+                </p>
+                <p style="margin-top:12px;font-size:13px;color:#888;">
+                    Android: 설정 → Google → 광고 → '광고 개인 최적화 선택 해제'로 맞춤 광고를 끌 수 있습니다.<br>
+                    iOS: 설정 → 개인 정보 보호 → 추적 → 앱의 추적 요청 허용 해제
+                </p>
+            </div>
+        </div>
+
+        <!-- 4. 권한 -->
+        <div class="section">
+            <div class="section-num">04</div>
+            <h2>앱 권한 사용</h2>
+            <p>앱은 기능 동작에 필요한 최소한의 권한만 요청합니다.</p>
+
+            <table class="info-table">
+                <tr>
+                    <th>권한</th>
+                    <th>사용 목적</th>
+                    <th>필수 여부</th>
+                </tr>
+                <tr>
+                    <td>카메라</td>
+                    <td>식단 사진 촬영, 약 사진 촬영</td>
+                    <td>선택 (기능 사용 시)</td>
+                </tr>
+                <tr>
+                    <td>사진/갤러리 저장</td>
+                    <td>영수증 이미지 갤러리 저장</td>
+                    <td>선택 (기능 사용 시)</td>
+                </tr>
+                <tr>
+                    <td>알림</td>
+                    <td>복용약 알림 발송</td>
+                    <td>선택 (기능 사용 시)</td>
+                </tr>
+                <tr>
+                    <td>파일 읽기</td>
+                    <td>JSON 데이터 불러오기</td>
+                    <td>선택 (기능 사용 시)</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <p>권한을 거부해도 앱은 정상 실행됩니다. 해당 기능만 비활성화됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 5. 데이터 보관·삭제 -->
+        <div class="section">
+            <div class="section-num">05</div>
+            <h2>데이터 보관 및 삭제</h2>
+
+            <h3>보관 기간</h3>
+            <p>사용자가 직접 삭제하거나 앱을 삭제할 때까지 기기 내에 보관됩니다. 개발사는 보관 기간을 결정하거나 데이터에 접근할 수 없습니다.</p>
+
+            <h3>삭제 방법</h3>
+            <ul>
+                <li><strong>개별 기록 삭제:</strong> 기록 화면에서 항목 삭제</li>
+                <li><strong>전체 데이터 삭제:</strong> 설정 → 전체 데이터 삭제</li>
+                <li><strong>앱 삭제:</strong> 기기에서 앱을 삭제하면 로컬 DB의 모든 데이터가 완전 삭제됩니다</li>
+            </ul>
+
+            <h3>데이터 내보내기 / 이전</h3>
+            <p>설정 → 데이터 내보내기를 통해 JSON 형식으로 즉시 추출할 수 있습니다. 기기 변경 시 JSON 파일을 이용해 새 기기에서 복원하세요.</p>
+        </div>
+
+        <!-- 6. 아동 -->
+        <div class="section">
+            <div class="section-num">06</div>
+            <h2>아동 개인정보 보호</h2>
+            <p>본 앱은 만 14세 미만 아동을 대상으로 하지 않습니다. 아동이 앱을 사용하는 경우, 보호자의 지도 아래 사용할 것을 권고합니다.</p>
+            <p>개발사는 아동으로부터 의도적으로 개인정보를 수집하지 않으며, 아동의 개인정보가 수집된 사실을 인지한 경우 즉시 삭제 조치합니다.</p>
+        </div>
+
+        <!-- 7. 보안 -->
+        <div class="section">
+            <div class="section-num">07</div>
+            <h2>보안</h2>
+            <p>사용자의 건강 데이터는 외부로 전송되지 않으므로 네트워크 상의 데이터 유출 위험이 없습니다. 기기 자체의 보안(화면 잠금, 암호화 등)을 통해 데이터를 보호하세요.</p>
+            <p>기기 분실·도난 시, 기기 잠금 해제 없이는 앱 데이터에 접근할 수 없습니다(기기 보안 설정에 따라 다를 수 있음).</p>
+        </div>
+
+        <!-- 8. 방침 변경 -->
+        <div class="section">
+            <div class="section-num">08</div>
+            <h2>개인정보 처리방침 변경</h2>
+            <p>본 방침은 법령 변경, 앱 기능 추가, 서비스 변경 시 업데이트될 수 있습니다. 변경 시 앱 업데이트 노트 또는 본 페이지를 통해 공지합니다.</p>
+            <p>중요한 변경 사항은 앱 내 알림을 통해 별도로 안내합니다.</p>
+        </div>
+
+        <!-- 9. 문의 -->
+        <div class="section">
+            <div class="section-num">09</div>
+            <h2>문의 및 개인정보 관련 요청</h2>
+            <p>개인정보 관련 문의, 불만 접수, 데이터 삭제 요청은 아래로 연락 주세요.</p>
+
+            <div class="contact-box">
+                <h3>개인정보 문의</h3>
+                <div class="contact-row">
+                    <span class="contact-label">개발사</span>
+                    <span class="contact-value">hopalt</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">이메일</span>
+                    <span class="contact-value"><a href="mailto:hopalt@gmail.com">hopalt@gmail.com</a></span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">앱 ID</span>
+                    <span class="contact-value">com.hopalt.vitalreceipt</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">응답 시간</span>
+                    <span class="contact-value">영업일 기준 3일 이내</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 hopalt · com.hopalt.vitalreceipt</p>
+        <p style="margin-top:6px;">
+            <a href="index.html">홈</a> &nbsp;·&nbsp;
+            <a href="mailto:hopalt@gmail.com">문의</a>
+        </p>
+        <p style="margin-top:10px;font-size:11px;opacity:.6;">본 방침은 2026년 6월 2일부터 적용됩니다.</p>
+    </footer>
+
+</body>
+
+</html>
