@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>혈압 가계부 — 나만의 건강 기록지</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F5EDE0;
+            --cream-dark: #EAD9C6;
+            --terracotta: #C8896A;
+            --terracotta-dark: #A0614A;
+            --terracotta-light: #E8C9B0;
+            --ink: #2A1F17;
+            --ink-mid: #5C4A3A;
+            --ink-light: #9A8070;
+            --red-vital: #C8726A;
+            --blue-bp: #9BAFC0;
+            --green-ok: #7A9E87;
+            --white: #FAFAF8;
+            --serif: 'Noto Serif KR', serif;
+            --sans: 'Noto Sans KR', sans-serif;
+            --mono: 'Space Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ─── HEADER ─── */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(245, 237, 224, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: block;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-family: var(--serif);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: 14px;
+            color: var(--ink-mid);
+            transition: color .2s;
+        }
+
+        nav a:hover {
+            color: var(--terracotta-dark);
+        }
+
+        .nav-cta {
+            background: var(--terracotta);
+            color: #fff !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: background .2s !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--terracotta-dark) !important;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px 60px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 30%, rgba(200, 137, 106, .12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at 80% 70%, rgba(155, 175, 192, .10) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-receipt {
+            width: 220px;
+            height: 280px;
+            background: var(--white);
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 20px 60px rgba(42, 31, 23, .15);
+            margin-bottom: 48px;
+            position: relative;
+            animation: floatUp 3s ease-in-out infinite;
+        }
+
+        .hero-receipt::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 14'%3E%3Cpath d='M0 0 Q5.5 14 11 0 Q16.5 14 22 0 Q27.5 14 33 0 Q38.5 14 44 0 Q49.5 14 55 0 Q60.5 14 66 0 Q71.5 14 77 0 Q82.5 14 88 0 Q93.5 14 99 0 Q104.5 14 110 0 Q115.5 14 121 0 Q126.5 14 132 0 Q137.5 14 143 0 Q148.5 14 154 0 Q159.5 14 165 0 Q170.5 14 176 0 Q181.5 14 187 0 Q192.5 14 198 0 Q203.5 14 209 0 Q214.5 14 220 0 Z' fill='%23F5EDE0'/%3E%3C/svg%3E") no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .receipt-inner {
+            padding: 24px 20px;
+        }
+
+        .receipt-title {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .15em;
+            color: var(--ink);
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .receipt-date {
+            font-size: 9px;
+            color: var(--ink-light);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .receipt-divider {
+            border: none;
+            border-top: 1px dashed var(--terracotta-light);
+            margin: 10px 0;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+
+        .receipt-label {
+            color: var(--ink-mid);
+        }
+
+        .receipt-value {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .receipt-pulse {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .pulse-emoji {
+            font-size: 14px;
+        }
+
+        .pulse-line {
+            flex: 1;
+            height: 20px;
+        }
+
+        @keyframes floatUp {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--ink);
+            margin-bottom: 20px;
+            letter-spacing: -.02em;
+        }
+
+        .hero h1 em {
+            color: var(--terracotta);
+            font-style: normal;
+        }
+
+        .hero-sub {
+            font-size: clamp(15px, 2vw, 18px);
+            color: var(--ink-mid);
+            max-width: 520px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--terracotta);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(200, 137, 106, .35);
+            transition: all .25s;
+        }
+
+        .btn-primary:hover {
+            background: var(--terracotta-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(200, 137, 106, .4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--terracotta-dark);
+            border: 1.5px solid var(--terracotta-light);
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all .25s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--terracotta-light);
+        }
+
+        .store-badge {
+            font-size: 12px;
+            opacity: .6;
+            margin-top: 16px;
+        }
+
+        /* ─── SECTIONS ─── */
+        section {
+            padding: 100px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .12em;
+            color: var(--terracotta-dark);
+            background: var(--terracotta-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 16px;
+            letter-spacing: -.02em;
+        }
+
+        .section-title em {
+            color: var(--terracotta);
+            font-style: normal;
+        }
+
+        .section-sub {
+            font-size: 16px;
+            color: var(--ink-mid);
+            max-width: 560px;
+            font-weight: 300;
+            margin-bottom: 60px;
+        }
+
+        /* ─── FEATURES ─── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feat-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px 32px;
+            border: 1px solid var(--cream-dark);
+            position: relative;
+            overflow: hidden;
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .feat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(42, 31, 23, .1);
+        }
+
+        .feat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .feat-icon.red {
+            background: rgba(200, 114, 106, .12);
+        }
+
+        .feat-icon.terra {
+            background: rgba(200, 137, 106, .12);
+        }
+
+        .feat-icon.blue {
+            background: rgba(155, 175, 192, .14);
+        }
+
+        .feat-icon.green {
+            background: rgba(122, 158, 135, .12);
+        }
+
+        .feat-card h3 {
+            font-family: var(--serif);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feat-card p {
+            font-size: 14px;
+            color: var(--ink-mid);
+            line-height: 1.7;
+        }
+
+        /* ─── HOW IT WORKS ─── */
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            background: var(--white);
+            border-radius: 24px;
+            border: 1px solid var(--cream-dark);
+            overflow: hidden;
+        }
+
+        .how-item {
+            padding: 48px 36px;
+            border-right: 1px solid var(--cream-dark);
+            position: relative;
+        }
+
+        .how-item:last-child {
+            border-right: none;
+        }
+
+        .how-num {
+            font-family: var(--mono);
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--terracotta-light);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .how-item h3 {
+            font-family: var(--serif);
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .how-item p {
+            font-size: 14px;
+            color: var(--ink-mid);
+            line-height: 1.75;
+        }
+
+        /* ─── PRIVACY HIGHLIGHT ─── */
+        .privacy-band {
+            background: var(--ink);
+            border-radius: 28px;
+            padding: 64px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .privacy-band .section-title {
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .privacy-band .section-sub {
+            color: rgba(255, 255, 255, .6);
+            margin-bottom: 0;
+        }
+
+        .privacy-checks {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .check-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(200, 137, 106, .2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .check-text h4 {
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 3px;
+        }
+
+        .check-text p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .55);
+            line-height: 1.6;
+        }
+
+        /* ─── RECEIPT PREVIEW ─── */
+        .receipt-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .receipt-demo {
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(42, 31, 23, .2);
+        }
+
+        .receipt-demo-header {
+            background: #111;
+            padding: 14px 20px;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .12em;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .receipt-demo-img {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .receipt-demo-data {
+            background: rgba(0, 0, 0, .7);
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .rdd-item {
+            text-align: center;
+        }
+
+        .rdd-label {
+            font-size: 9px;
+            color: #666;
+            font-family: var(--mono);
+            margin-bottom: 3px;
+        }
+
+        .rdd-value {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: #ddd;
+        }
+
+        .receipt-demo-footer {
+            background: #0d0d0d;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .receipt-demo-footer svg {
+            flex: 1;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, .5);
+            padding: 48px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-family: var(--serif);
+            font-size: 18px;
+            color: rgba(255, 255, 255, .85);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, .5);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color .2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracotta-light);
+        }
+
+        .footer-copy {
+            font-size: 12px;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            padding-top: 24px;
+            margin-top: 8px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            header {
+                padding: 14px 20px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 80px 24px 50px;
+            }
+
+            section {
+                padding: 70px 24px;
+            }
+
+            .how-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .how-item {
+                border-right: none;
+                border-bottom: 1px solid var(--cream-dark);
+            }
+
+            .how-item:last-child {
+                border-bottom: none;
+            }
+
+            .privacy-band {
+                grid-template-columns: 1fr;
+                padding: 40px 28px;
+                gap: 36px;
+            }
+
+            .receipt-showcase {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a class="logo" href="index.html">
+            <img class="logo-icon" src="asset/img.png" alt="혈압 가계부 로고">
+            <span class="logo-text">혈압 가계부</span>
+        </a>
+        <nav>
+            <a href="#features">기능</a>
+            <a href="#how">사용법</a>
+            <a href="#privacy">개인정보</a>
+            <a href="privacy.html" class="nav-cta">개인정보 처리방침</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-bg"></div>
+
+        <!-- 영수증 목업 -->
+        <div class="hero-receipt">
+            <div class="receipt-inner">
+                <div class="receipt-title">VITAL RECEIPT</div>
+                <div class="receipt-date">2026.06.02 (화) 08:30</div>
+                <hr class="receipt-divider">
+                <div class="receipt-row">
+                    <span class="receipt-label">체중</span>
+                    <span class="receipt-value">72.5 KG</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">혈압</span>
+                    <span class="receipt-value">118/76</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">심박</span>
+                    <span class="receipt-value">68 BPM</span>
+                </div>
+                <hr class="receipt-divider">
+                <div class="receipt-row">
+                    <span class="receipt-label">복용약</span>
+                    <span class="receipt-value" style="font-size:9px;color:#7A9E87;">2 / 2 ✓</span>
+                </div>
+                <div class="receipt-pulse">
+                    <span class="pulse-emoji">❤️</span>
+                    <svg class="pulse-line" viewBox="0 0 100 20" fill="none">
+                        <polyline
+                            points="0,12 10,12 15,4 20,18 25,10 30,14 40,14 45,2 50,16 55,12 70,12 75,6 80,15 85,12 100,12"
+                            stroke="#C8726A" stroke-width="1.2" fill="none" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <h1>매일 찍는 나의 건강<br><em>영수증</em> 한 장</h1>
+        <p class="hero-sub">체중·혈압·심박수·복용약을 빠르게 기록하고,<br>식단 사진과 함께 영수증으로 간직하세요.</p>
+
+        <div class="hero-btns">
+            <a href="#" class="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.42c1.37.07 2.31.74 3.12.8 1.19-.24 2.33-1 3.6-.84 1.53.19 2.68.83 3.44 2.07-3.14 1.88-2.39 5.99.84 7.15-.47 1.35-1.1 2.68-3 3.68zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                </svg>
+                App Store
+            </a>
+            <a href="#" class="btn-primary" style="background:var(--terracotta-dark);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l15 8.5c.5.3.5 1 0 1.3L4.5 21c-.5.33-1.5.33-1.5-.5z" />
+                </svg>
+                Google Play
+            </a>
+        </div>
+        <p class="store-badge">무료 다운로드 · 광고 포함</p>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-tag">FEATURES</div>
+        <h2 class="section-title">건강 기록, 이제<br><em>3초</em>면 충분해요</h2>
+        <p class="section-sub">복잡한 기능은 다 빼고, 빠른 입력과 감성 있는 영수증 한 장에 집중했습니다.</p>
+
+        <div class="features-grid">
+            <div class="feat-card">
+                <div class="feat-icon red">💓</div>
+                <h3>혈압·심박 초고속 입력</h3>
+                <p>화면 가득 채운 전용 숫자 키패드로 최고혈압→최저혈압→심박수를 탭 이동 없이 한 호흡에 입력합니다.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon terra">🧾</div>
+                <h3>감성 영수증 렌더링</h3>
+                <p>식단 사진에 오늘의 체중·혈압·심박 데이터를 도트 폰트로 입혀 영수증 한 장으로 갤러리에 저장합니다.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon terra">⚖️</div>
+                <h3>체중 기록</h3>
+                <p>전용 숫자 키패드로 체중을 빠르게 입력합니다. 최근 기록 추이를 한눈에 확인할 수 있어요.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon green">💊</div>
+                <h3>복용약 스마트 알림</h3>
+                <p>식단 촬영 후 N분 뒤 자동 알림, 또는 지정 시각 알림. 복용 완료·건너뜀 기록으로 복용률도 확인하세요.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon blue">📊</div>
+                <h3>복용 통계</h3>
+                <p>요일별·약별 복용률을 한눈에. 연속 복용일 기록으로 꾸준한 복용 습관을 만들어보세요.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon green">📤</div>
+                <h3>JSON 데이터 내보내기</h3>
+                <p>모든 수치 데이터를 초경량 JSON으로 즉시 추출. PC로 옮겨 엑셀로 자유롭게 분석하세요.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" style="padding-top: 0;">
+        <div class="section-tag">HOW IT WORKS</div>
+        <h2 class="section-title">하루 <em>세 번</em>의 루틴</h2>
+        <p class="section-sub">아침에 재고, 측정하고, 찍으면 끝. 그게 전부입니다.</p>
+
+        <div class="how-grid">
+            <div class="how-item">
+                <div class="how-num">01</div>
+                <h3>체중·혈압 입력</h3>
+                <p>앱을 열고 숫자 키패드로 체중과 혈압·심박수를 타다닥 입력합니다. 탭 이동도 없이 10초면 완료.</p>
+            </div>
+            <div class="how-item">
+                <div class="how-num">02</div>
+                <h3>식단 촬영</h3>
+                <p>밥 먹을 때 앱 내 카메라로 찍으면 오늘의 수치가 자동으로 입혀진 영수증 이미지가 갤러리에 저장됩니다.</p>
+            </div>
+            <div class="how-item">
+                <div class="how-num">03</div>
+                <h3>약 알림 수신</h3>
+                <p>식단 촬영 후 설정한 시간이 지나면 복용약 알림이 울립니다. 앱에서 복용 완료를 확인하세요.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECEIPT SHOWCASE -->
+    <section style="padding-top: 0;">
+        <div class="receipt-showcase">
+            <div>
+                <div class="section-tag">RECEIPT</div>
+                <h2 class="section-title">공유하기 딱 좋은<br><em>영수증</em> 한 장</h2>
+                <p style="font-size:15px;color:var(--ink-mid);line-height:1.8;margin-bottom:24px;">
+                    식단 사진 위에 체중·혈압·심박 데이터를 도트 폰트로 입히고,<br>
+                    심박수에 맞는 ECG 파형과 이모지가 하단에 찍혀 나옵니다.<br><br>
+                    원본 이미지는 앱에 저장하지 않고 갤러리에만 남겨요.
+                </p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mid);">
+                        <span style="color:var(--green-ok);">●</span> 심박 &lt; 60: 🐢
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mid);">
+                        <span style="color:var(--terracotta);">●</span> 60–100: ❤️
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-mid);">
+                        <span style="color:var(--blue-bp);">●</span> &gt; 100: 🐰
+                    </div>
+                </div>
+            </div>
+            <div class="receipt-demo">
+                <div class="receipt-demo-header">
+                    <span>VITAL RECEIPT</span>
+                    <span>2026.06.02 08:30</span>
+                </div>
+                <div class="receipt-demo-img">🥗</div>
+                <div class="receipt-demo-data">
+                    <div class="rdd-item">
+                        <div class="rdd-label">WEIGHT</div>
+                        <div class="rdd-value">72.5KG</div>
+                    </div>
+                    <div class="rdd-item">
+                        <div class="rdd-label">B.P.</div>
+                        <div class="rdd-value">118/76</div>
+                    </div>
+                    <div class="rdd-item">
+                        <div class="rdd-label">BPM</div>
+                        <div class="rdd-value">68</div>
+                    </div>
+                </div>
+                <div class="receipt-demo-footer">
+                    <span style="font-size:16px;">❤️</span>
+                    <svg viewBox="0 0 160 20" height="20" fill="none">
+                        <polyline
+                            points="0,12 12,12 18,3 24,18 30,12 42,12 48,2 54,17 60,12 80,12 86,5 92,16 98,12 120,12 126,4 132,17 138,12 160,12"
+                            stroke="#C8726A" stroke-width="1.2" />
+                    </svg>
+                    <span style="font-size:10px;color:#555;margin-left:4px;white-space:nowrap;">68 BPM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY HIGHLIGHT -->
+    <section id="privacy" style="padding-top: 0;">
+        <div class="privacy-band">
+            <div>
+                <div class="section-tag" style="background:rgba(200,137,106,.2);color:var(--terracotta-light);">PRIVACY
+                    FIRST</div>
+                <h2 class="section-title" style="color:#fff;">모든 데이터는<br>당신의 <em
+                        style="color:var(--terracotta-light);">폰 안</em>에만</h2>
+                <p class="section-sub">외부 서버 없음. 클라우드 없음. 회원가입 없음.<br>건강 데이터는 내 기기에서만 존재합니다.</p>
+            </div>
+            <div class="privacy-checks">
+                <div class="check-row">
+                    <div class="check-icon">🔒</div>
+                    <div class="check-text">
+                        <h4>완전 오프라인 작동</h4>
+                        <p>인터넷 없이도 모든 기능이 동작합니다. 광고 로드 외 어떠한 외부 통신도 하지 않습니다.</p>
+                    </div>
+                </div>
+                <div class="check-row">
+                    <div class="check-icon">📱</div>
+                    <div class="check-text">
+                        <h4>로컬 DB 전용 저장</h4>
+                        <p>모든 건강 수치는 기기 내 SQLite DB에만 저장됩니다. 서버 전송 없음.</p>
+                    </div>
+                </div>
+                <div class="check-row">
+                    <div class="check-icon">📤</div>
+                    <div class="check-text">
+                        <h4>데이터 주권 100%</h4>
+                        <p>언제든 JSON으로 내보내고, 기기 변경 시 불러오기. 삭제도 즉시 완전 삭제.</p>
+                    </div>
+                </div>
+                <div class="check-row">
+                    <div class="check-icon">📢</div>
+                    <div class="check-text">
+                        <h4>광고 안내</h4>
+                        <p>앱 유지를 위해 Google AdMob 배너 광고가 표시됩니다. 광고 SDK는 독립적으로 작동합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">혈압 가계부</div>
+        <div class="footer-links">
+            <a href="privacy.html">개인정보 처리방침</a>
+            <a href="mailto:hopalt@gmail.com">문의</a>
+        </div>
+        <div class="footer-copy">
+            © 2026 Hopalt. All rights reserved. · com.hopalt.vitalreceipt<br>
+            본 앱은 의료 기기가 아니며, 건강 수치는 참고용입니다. 이상 징후는 반드시 전문의와 상담하세요.
+        </div>
+    </footer>
+
+</body>
+
+</html>
